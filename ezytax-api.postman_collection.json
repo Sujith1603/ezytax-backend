@@ -1,0 +1,90 @@
+{
+    "info": {
+      "_postman_id": "ezytax-backend-api",
+      "name": "EzyTax API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Auth - Register",
+        "request": {
+          "method": "POST",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "url": { "raw": "http://localhost:5000/api/auth/register", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "register"] },
+          "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}" }
+        }
+      },
+      {
+        "name": "Auth - Login",
+        "request": {
+          "method": "POST",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "url": { "raw": "http://localhost:5000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "login"] },
+          "body": { "mode": "raw", "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}" }
+        }
+      },
+      {
+        "name": "Get All Users",
+        "request": {
+          "method": "GET",
+          "url": { "raw": "http://localhost:5000/api/users", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "users"] }
+        }
+      },
+      {
+        "name": "Get User by ID",
+        "request": {
+          "method": "GET",
+          "url": { "raw": "http://localhost:5000/api/users/:id", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "users", ":id"] }
+        }
+      },
+      {
+        "name": "Create Payment",
+        "request": {
+          "method": "POST",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "url": { "raw": "http://localhost:5000/api/payments", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "payments"] },
+          "body": { "mode": "raw", "raw": "{\n  \"userId\": \"PUT_USER_ID_HERE\",\n  \"amount\": 100,\n  \"status\": \"completed\"\n}" }
+        }
+      },
+      {
+        "name": "Get All Payments",
+        "request": {
+          "method": "GET",
+          "url": { "raw": "http://localhost:5000/api/payments", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "payments"] }
+        }
+      },
+      {
+        "name": "Add Question",
+        "request": {
+          "method": "POST",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "url": { "raw": "http://localhost:5000/api/questions", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "questions"] },
+          "body": { "mode": "raw", "raw": "{\n  \"userId\": \"PUT_USER_ID_HERE\",\n  \"question\": \"What is my tax ID?\",\n  \"answer\": \"Your tax ID is XYZ123.\"\n}" }
+        }
+      },
+      {
+        "name": "Get All Questions",
+        "request": {
+          "method": "GET",
+          "url": { "raw": "http://localhost:5000/api/questions", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "questions"] }
+        }
+      },
+      {
+        "name": "Add UTR",
+        "request": {
+          "method": "POST",
+          "header": [{"key": "Content-Type", "value": "application/json"}],
+          "url": { "raw": "http://localhost:5000/api/utr", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "utr"] },
+          "body": { "mode": "raw", "raw": "{\n  \"userId\": \"PUT_USER_ID_HERE\",\n  \"utrNumber\": \"UTR123456\"\n}" }
+        }
+      },
+      {
+        "name": "Get All UTRs",
+        "request": {
+          "method": "GET",
+          "url": { "raw": "http://localhost:5000/api/utr", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "utr"] }
+        }
+      }
+    ]
+  }
+  
