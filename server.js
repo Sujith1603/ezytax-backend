@@ -1,22 +1,17 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const nodemailer = require('nodemailer');
 
-// Load environment variables from .env file
-dotenv.config();
-
 // Initialize express app
 const app = express();
 
-// Security HTTP headers
+// Security headers
 app.use(helmet());
 
-// Rate Limiting - 100 requests per 15 mins
+// Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -26,16 +21,18 @@ app.use(limiter);
 
 // Enable CORS for your frontend domain
 app.use(cors({
-  origin: ['https://ezytax.netlify.app/'], // ⬅️ REPLACE with your actual Netlify URL
+  origin: ['https://ezytax.netlify.app'],
   credentials: true
 }));
 
-// Enable JSON body parsing
 app.use(express.json());
+
+// Debug env variables (comment out in production!)
+console.log("🚨 MONGO_URI:", process.env.MONGO_URI);
+console.log("🚨 EMAIL_USER:", process.env.EMAIL_USER);
 
 // Mongoose config
 mongoose.set('strictQuery', true);
-console.log("🚨 MONGO_URI:", process.env.MONGO_URI);
 
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -47,12 +44,9 @@ app.use('/api/filings', require('./routes/filings'));
 app.use('/api/utr', require('./routes/utr'));
 app.use('/api/consults', require('./routes/consults'));
 
-// Test ping route
-app.get('/api/ping', (req, res) => {
-  res.send('Pong 🏓');
-});
+app.get('/api/ping', (req, res) => res.send('Pong 🏓'));
 
-// Nodemailer Email Transporter
+// Nodemailer Email Setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -61,7 +55,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Optional: Test Email Endpoint
 app.post('/api/test-email', (req, res) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -80,7 +73,7 @@ app.post('/api/test-email', (req, res) => {
   });
 });
 
-// Connect to MongoDB Atlas and start server
+// MongoDB Connection and Start Server
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -89,7 +82,7 @@ mongoose.connect(process.env.MONGO_URI, {
   console.log('✅ MongoDB connected');
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
   });
 })
 .catch((err) => {
