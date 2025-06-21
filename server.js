@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const nodemailer = require('nodemailer');
+require('dotenv').config(); // ✅ Loads .env in local dev
 
 // Initialize express app
 const app = express();
@@ -19,7 +20,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Enable CORS for your frontend domain
+// Enable CORS
 app.use(cors({
   origin: ['https://ezytax.netlify.app'],
   credentials: true
@@ -27,9 +28,9 @@ app.use(cors({
 
 app.use(express.json());
 
-// Debug env variables (comment out in production!)
-console.log("🚨 MONGO_URI:", process.env.MONGO_URI);
-console.log("🚨 EMAIL_USER:", process.env.EMAIL_USER);
+// Debug env variables
+console.log("🚨 MONGO_URI:", process.env.MONGO_URI || 'Not Defined');
+console.log("🚨 EMAIL_USER:", process.env.EMAIL_USER || 'Not Defined');
 
 // Mongoose config
 mongoose.set('strictQuery', true);
@@ -44,9 +45,10 @@ app.use('/api/filings', require('./routes/filings'));
 app.use('/api/utr', require('./routes/utr'));
 app.use('/api/consults', require('./routes/consults'));
 
+// Health check
 app.get('/api/ping', (req, res) => res.send('Pong 🏓'));
 
-// Nodemailer Email Setup
+// Email Transport
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -73,7 +75,7 @@ app.post('/api/test-email', (req, res) => {
   });
 });
 
-// MongoDB Connection and Start Server
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -86,5 +88,5 @@ mongoose.connect(process.env.MONGO_URI, {
   });
 })
 .catch((err) => {
-  console.error('❌ MongoDB connection error:', err);
+  console.error('❌ MongoDB connection error:', err.message);
 });
