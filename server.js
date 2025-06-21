@@ -35,6 +35,7 @@ app.use(express.json());
 
 // Mongoose config
 mongoose.set('strictQuery', true);
+console.log("🚨 MONGO_URI:", process.env.MONGO_URI);
 
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
